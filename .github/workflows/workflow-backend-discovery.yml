@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  code-quality-.:
+  code-quality-discovery:
     name: Lint do módulo .
     runs-on: ubuntu-latest
     steps:
@@ -42,7 +42,7 @@ jobs:
         run: mvn -B -f ./pom.xml spotbugs:spotbugs
   
   test-discovery:
-    needs: [code-quality-.]
+    needs: [code-quality-discovery]
     name: Execute Unit tests for Discovery Module
     runs-on: ubuntu-latest
     steps:
@@ -84,7 +84,7 @@ jobs:
       - name: Upload Backend Artifact
         uses: actions/upload-artifact@v6
         with:
-          name: .-jar
+          name: service-discovery-jar
           path: ./target/*.jar
           retention-days: 1
 
