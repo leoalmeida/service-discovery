@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   code-quality-discovery:
     name: Lint do módulo .
@@ -63,8 +67,8 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./target/site/jacoco/jacoco.xml
+          use_oidc: true
+          files: target/site/jacoco/jacoco.xml
           flags: service-discovery
           name: service-discovery
           fail_ci_if_error: false
