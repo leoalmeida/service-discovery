@@ -6,8 +6,8 @@ on:
       - main
 
 jobs:
-  code-quality-service-discovery:
-    name: Lint do módulo service-discovery
+  code-quality-.:
+    name: Lint do módulo .
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -21,28 +21,28 @@ jobs:
           cache: 'maven'
       
       #- name: Run spotless check
-      #  run: mvn -B -f service-discovery/pom.xml spotless:check
+      #  run: mvn -B -f ./pom.xml spotless:check
 
       - name: Run Checkstyle
-        run: mvn -B -f service-discovery/pom.xml checkstyle:check
+        run: mvn -B -f ./pom.xml checkstyle:check
 
       - name: Generate Checkstyle report
-        run: mvn -B -f service-discovery/pom.xml checkstyle:checkstyle
+        run: mvn -B -f ./pom.xml checkstyle:checkstyle
 
       - name: Run PMD check
-        run: mvn -B -f service-discovery/pom.xml pmd:check
+        run: mvn -B -f ./pom.xml pmd:check
 
       - name: generate PMD report
-        run: mvn -B -f service-discovery/pom.xml pmd:pmd
+        run: mvn -B -f ./pom.xml pmd:pmd
       
       - name: Run spotbugs check
-        run: mvn -B -f service-discovery/pom.xml spotbugs:check
+        run: mvn -B -f ./pom.xml spotbugs:check
 
       - name: Generate SpotBugs report
-        run: mvn -B -f service-discovery/pom.xml spotbugs:spotbugs
+        run: mvn -B -f ./pom.xml spotbugs:spotbugs
   
   test-discovery:
-    needs: [code-quality-service-discovery]
+    needs: [code-quality-.]
     name: Execute Unit tests for Discovery Module
     runs-on: ubuntu-latest
     steps:
@@ -56,15 +56,15 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
   
-      - name: Roda os testes do módulo service-discovery
-        run: mvn -B -f service-discovery/pom.xml clean package
-      - name: Run Code Quality Analysis do módulo service-discovery
-        run: mvn -B -f service-discovery/pom.xml jacoco:report
-      - name: Upload Coverage Report do módulo service-discovery
+      - name: Roda os testes do módulo .
+        run: mvn -B -f ./pom.xml clean package
+      - name: Run Code Quality Analysis do módulo .
+        run: mvn -B -f ./pom.xml jacoco:report
+      - name: Upload Coverage Report do módulo .
         uses: actions/upload-artifact@v6
         with:
           name: coverage-report
-          path: service-discovery/target/site/jacoco/
+          path: ./target/site/jacoco/
           retention-days: 1
 
   build-discovery:
@@ -78,14 +78,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: 'maven'
-      - name: Build service-discovery module
-        run: mvn -B -f service-discovery/pom.xml clean package -DskipTests
+      - name: Build . module
+        run: mvn -B -f ./pom.xml clean package -DskipTests
       
       - name: Upload Backend Artifact
         uses: actions/upload-artifact@v6
         with:
-          name: service-discovery-jar
-          path: service-discovery/target/*.jar
+          name: .-jar
+          path: ./target/*.jar
           retention-days: 1
 
   #docker:
