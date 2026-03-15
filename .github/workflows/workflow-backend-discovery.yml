@@ -60,6 +60,15 @@ jobs:
         run: mvn -B -f ./pom.xml clean package
       - name: Run Code Quality Analysis do módulo .
         run: mvn -B -f ./pom.xml jacoco:report
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./target/site/jacoco/jacoco.xml
+          flags: service-discovery
+          name: service-discovery
+          fail_ci_if_error: false
+          verbose: true
       - name: Upload Coverage Report do módulo .
         uses: actions/upload-artifact@v6
         with:
